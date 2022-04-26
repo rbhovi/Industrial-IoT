@@ -34,39 +34,51 @@ jobs:
       TreatSignatureUpdateFailureAs: 'Warning'
       SignatureFreshness: 'UpToDate'
       TreatStaleSignatureAs: 'Warning'
-  - task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
+  # - task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
+  #   displayName: 'Executable Signing'
+  #   condition: and(succeeded(), eq('${{ parameters.sign }}', 'True'))
+  #   inputs:
+  #     ConnectedServiceName: 'Code Signing Certificate'
+  #     FolderPath: '$(Build.ArtifactStagingDirectory)'
+  #     Pattern: '**/Microsoft.Azure.IIoT.Deployment/Microsoft.Azure.IIoT.Deployment.exe'
+  #     UseMinimatch: true
+  #     signConfigType: inlineSignParams
+  #     inlineOperation: |
+  #       [{
+  #           "KeyCode": "CP-230012",
+  #           "OperationCode": "SigntoolSign",
+  #           "Parameters": {
+  #               "OpusName" : "Microsoft",
+  #               "OpusInfo" : "http://www.microsoft.com",
+  #               "FileDigest" : "/fd \"SHA256\"",
+  #               "PageHash" : "/NPH",
+  #               "TimeStamp" : "/tr \"http://rfc3161.gtm.corp.microsoft.com/TSS/HttpTspServer\" /td sha256"
+  #           },
+  #           "ToolName": "sign",
+  #           "ToolVersion": "1.0"
+  #       },
+  #       {
+  #           "KeyCode": "CP-230012",
+  #           "OperationCode": "SigntoolVerify",
+  #           "Parameters": {},
+  #           "ToolName": "sign",
+  #           "ToolVersion": "1.0"
+  #       }]
+  #     MaxConcurrency: 1
+  #     MaxRetryAttempts: 5
+  #     VerboseLogin: true
+
+  - task: onebranch.pipeline.signing@1
     displayName: 'Executable Signing'
     condition: and(succeeded(), eq('${{ parameters.sign }}', 'True'))
     inputs:
-      ConnectedServiceName: 'Code Signing Certificate'
-      FolderPath: '$(Build.ArtifactStagingDirectory)'
-      Pattern: '**/Microsoft.Azure.IIoT.Deployment/Microsoft.Azure.IIoT.Deployment.exe'
-      UseMinimatch: true
-      signConfigType: inlineSignParams
-      inlineOperation: |
-        [{
-            "KeyCode": "CP-230012",
-            "OperationCode": "SigntoolSign",
-            "Parameters": {
-                "OpusName" : "Microsoft",
-                "OpusInfo" : "http://www.microsoft.com",
-                "FileDigest" : "/fd \"SHA256\"",
-                "PageHash" : "/NPH",
-                "TimeStamp" : "/tr \"http://rfc3161.gtm.corp.microsoft.com/TSS/HttpTspServer\" /td sha256"
-            },
-            "ToolName": "sign",
-            "ToolVersion": "1.0"
-        },
-        {
-            "KeyCode": "CP-230012",
-            "OperationCode": "SigntoolVerify",
-            "Parameters": {},
-            "ToolName": "sign",
-            "ToolVersion": "1.0"
-        }]
-      MaxConcurrency: 1
-      MaxRetryAttempts: 5
-      VerboseLogin: true
+      command: sign
+      signing_environment: azure-ado
+      signing_profile: external_distribution
+      files_to_sign: '**/Microsoft.Azure.IIoT.Deployment/Microsoft.Azure.IIoT.Deployment.exe'
+      search_root: $(Build.ArtifactStagingDirectory)
+      use_testsign: false
+
   - task: CmdLine@2
     displayName: 'Generate MD5 Checksum'
     inputs:
