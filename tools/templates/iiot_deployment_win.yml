@@ -65,7 +65,7 @@ jobs:
             "ToolVersion": "1.0"
         }]
       MaxConcurrency: 1
-      MaxRetryAttempts: 50
+      MaxRetryAttempts: 5
       VerboseLogin: true
   - task: CmdLine@2
     displayName: 'Generate MD5 Checksum'
