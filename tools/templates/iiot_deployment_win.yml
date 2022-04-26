@@ -45,39 +45,24 @@ jobs:
       signConfigType: inlineSignParams
       inlineOperation: |
         [{
-            "keyCode": "CP-230012",
-            "operationSetCode": "SigntoolSign",
-            "parameters": [
-            {
-                "parameterName": "OpusName",
-                "parameterValue": "Microsoft"
+            "KeyCode": "CP-230012",
+            "OperationCode": "SigntoolSign",
+            "Parameters": {
+                "OpusName" : "Microsoft",
+                "OpusInfo" : "http://www.microsoft.com",
+                "FileDigest" : "/fd \"SHA256\"",
+                "PageHash" : "/NPH",
+                "TimeStamp" : "/tr \"http://rfc3161.gtm.corp.microsoft.com/TSS/HttpTspServer\" /td sha256"
             },
-            {
-                "parameterName": "OpusInfo",
-                "parameterValue": "http://www.microsoft.com"
-            },
-            {
-                "parameterName": "FileDigest",
-                "parameterValue": "/fd \"SHA256\""
-            },
-            {
-                "parameterName": "PageHash",
-                "parameterValue": "/NPH"
-            },
-            {
-                "parameterName": "TimeStamp",
-                "parameterValue": "/tr \"http://rfc3161.gtm.corp.microsoft.com/TSS/HttpTspServer\" /td sha256"
-            }
-            ],
-            "toolName": "sign",
-            "toolVersion": "1.0"
+            "ToolName": "sign",
+            "ToolVersion": "1.0"
         },
         {
-            "keyCode": "CP-230012",
-            "operationSetCode": "SigntoolVerify",
-            "parameters": [ ],
-            "toolName": "sign",
-            "toolVersion": "1.0"
+            "KeyCode": "CP-230012",
+            "OperationCode": "SigntoolVerify",
+            "Parameters": {},
+            "ToolName": "sign",
+            "ToolVersion": "1.0"
         }]
       MaxConcurrency: 1
       MaxRetryAttempts: 50
