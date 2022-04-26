@@ -72,12 +72,11 @@ jobs:
     displayName: 'Executable Signing'
     condition: and(succeeded(), eq('${{ parameters.sign }}', 'True'))
     inputs:
-      command: sign
-      signing_environment: azure-ado
-      signing_profile: external_distribution
+      command: 'sign'
+      signing_environment: 'azure-ado'
+      signing_profile: 'external_distribution'
       files_to_sign: '**/Microsoft.Azure.IIoT.Deployment/Microsoft.Azure.IIoT.Deployment.exe'
-      search_root: $(Build.ArtifactStagingDirectory)
-      use_testsign: false
+      search_root: '$(Build.ArtifactStagingDirectory)'
 
   - task: CmdLine@2
     displayName: 'Generate MD5 Checksum'
